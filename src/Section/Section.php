@@ -104,16 +104,6 @@ abstract class Section
     }
 
     /**
-     * Lifecycle hook when the instance is created
-     *
-     * @return void
-     */
-    protected function setup(): void
-    {
-
-    }
-
-    /**
      * @return array
      */
     public function toArray(): array
