@@ -111,10 +111,12 @@ class FilesSection extends ModelsSection
      */
     public function props(): array
     {
-        return array_merge(parent::props(), [
-            'accept' => $this->accept(),
-            'apiUrl' => $this->api(),
-            'upload' => $this->upload()
+        return array_replace_recursive(parent::props(), [
+            'options' => [
+                'accept' => $this->accept(),
+                'apiUrl' => $this->api(),
+                'upload' => $this->upload()
+            ]
         ]);
     }
 

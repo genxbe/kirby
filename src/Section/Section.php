@@ -210,7 +210,8 @@ abstract class Section
                 'type' => 'i18n',
             ],
             'label' => [
-                'type' => 'i18n',
+                'type'  => 'i18n',
+                'alias' => 'headline'
             ],
         ];
     }
@@ -272,13 +273,12 @@ abstract class Section
      */
     public function toResponse(): array
     {
-        return [
+        return array_merge([
             'code'   => 200,
             'name'   => $this->name(),
-            'props'  => $this->props(),
             'status' => 'ok',
             'type'   => $this->type(),
-        ];
+        ], $this->props());
     }
 
     /**

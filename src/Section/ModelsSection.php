@@ -230,22 +230,24 @@ abstract class ModelsSection extends Section
     public function props(): array
     {
         return [
-            'add'        => $this->add(),
-            'data'       => $this->data(),
-            'errors'     => $this->errors(),
-            'empty'      => $this->empty(),
-            'flip'       => $this->flip(),
-            'help'       => $this->help(),
-            'label'      => $this->label(),
-            'layout'     => $this->layout(),
-            'link'       => $this->link(),
-            'max'        => $this->max(),
-            'min'        => $this->min(),
+            'data'    => $this->data(),
+            'errors'  => $this->errors(),
+            'options' => [
+                'add'      => $this->add(),
+                'empty'    => $this->empty(),
+                'flip'     => $this->flip(),
+                'help'     => $this->help(),
+                'label'    => $this->label(),
+                'layout'   => $this->layout(),
+                'link'     => $this->link(),
+                'max'      => $this->max(),
+                'min'      => $this->min(),
+                'query'    => $this->query(),
+                'search'   => $this->search(),
+                'size'     => $this->size(),
+                'sortable' => $this->sortable(),
+            ],
             'pagination' => $this->pagination(),
-            'query'      => $this->query(),
-            'search'     => $this->search(),
-            'size'       => $this->size(),
-            'sortable'   => $this->sortable(),
         ];
     }
 
