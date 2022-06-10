@@ -2,6 +2,11 @@
 
 namespace Kirby\Section;
 
+use Kirby\Exception\InvalidArgumentException;
+use Kirby\Cms\Collection;
+use Kirby\Toolkit\I18n;
+use Kirby\Toolkit\V;
+
 /**
  * @package   Kirby Section
  * @author    Bastian Allgeier <bastian@getkirby.com>
@@ -11,18 +16,85 @@ namespace Kirby\Section;
  */
 abstract class ModelsSection extends Section
 {
-
-    use EmptyState;
-    use Help;
-    use Label;
-    use Pagination;
     use ParentModel;
 
+    /**
+     * @var \Kirby\Cms\Collection
+     */
+    protected $models;
+
+    /**
+     * @param \Kirby\Cms\ModelWithContent $model
+     * @param array $options
+     */
     public function __construct(...$args)
     {
         parent::__construct(...$args);
 
-        $this->setParent($this->options['parent']);
+        $this->createParent($this->options['parent']);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function add(): bool
+    {
+        if ($this->isFull() === true) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \Kirby\Cms\Collection $models
+     * @return \Kirby\Cms\Collection
+     */
+    public function applyFlip(Collection $models)
+    {
+        if ($this->options['flip'] === false) {
+            return $models;
+        }
+
+        return $models->flip();
+    }
+
+    /**
+     * @param \Kirby\Cms\Collection $models
+     * @return \Kirby\Cms\Collection
+     */
+    public function applyPagination(Collection $models)
+    {
+        return $models->paginate([
+            'limit' => $this->limit(),
+            'page'  => $this->page()
+        ]);
+    }
+
+    /**
+     * @param \Kirby\Cms\Collection $models
+     * @return \Kirby\Cms\Collection
+     */
+    public function applySearch(Collection $models)
+    {
+        if (empty($query = $this->query()) === true) {
+            return $models;
+        }
+
+        return $models->search($query);
+    }
+
+    /**
+     * @param \Kirby\Cms\Collection $models
+     * @return \Kirby\Cms\Collection
+     */
+    public function applySort(Collection $models)
+    {
+        if ($this->options['sortBy'] === null) {
+            return $models;
+        }
+
+        return $models->sort(...$models::sortArgs($this->options['sortBy']));
     }
 
     /**
@@ -34,11 +106,27 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return array
+     * @return string|null
      */
-    public function errors(): array
+    public function empty(): ?string
     {
-        return [];
+        return $this->stringTemplate($this->options['empty']);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function flip(): bool
+    {
+        return $this->options['flip'];
+    }
+
+    /**
+     * @return array|bool|string
+     */
+    public function image()
+    {
+        return $this->options['image'];
     }
 
     /**
@@ -50,11 +138,31 @@ abstract class ModelsSection extends Section
     }
 
     /**
+     * @return boolean
+     */
+    public function isFull(): bool
+    {
+        if ($max = $this->max()) {
+            return $this->total() >= $max;
+        }
+
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function layout(): string
     {
         return $this->options['layout'];
+    }
+
+    /**
+     * @return integer
+     */
+    public function limit(): int
+    {
+        return $this->options['limit'] ?? 20;
     }
 
     /**
@@ -73,22 +181,80 @@ abstract class ModelsSection extends Section
     }
 
     /**
+     * @return integer|null
+     */
+    public function max(): ?int
+    {
+        return $this->options['max'];
+    }
+
+    /**
+     * @return integer
+     */
+    public function min(): int
+    {
+        return $this->options['min'];
+    }
+
+    /**
+     * @return \Kirby\Cms\Collection
+     */
+    abstract public function models();
+
+    /**
+     * @return integer
+     */
+    public function page(): int
+    {
+        return $this->options['page'] ?? get('page') ?? 1;
+    }
+
+    /**
+     * @return array
+     */
+    public function pagination(): array
+    {
+        $pagination = $this->models()->pagination();
+
+        return [
+            'limit'  => $pagination->limit(),
+            'offset' => $pagination->offset(),
+            'page'   => $pagination->page(),
+            'total'  => $pagination->total(),
+        ];
+    }
+
+    /**
      * @return array
      */
     public function props(): array
     {
         return [
+            'add'        => $this->add(),
             'data'       => $this->data(),
             'errors'     => $this->errors(),
             'empty'      => $this->empty(),
+            'flip'       => $this->flip(),
             'help'       => $this->help(),
             'label'      => $this->label(),
             'layout'     => $this->layout(),
             'link'       => $this->link(),
+            'max'        => $this->max(),
+            'min'        => $this->min(),
             'pagination' => $this->pagination(),
-            'sortable'   => $this->sortable(),
+            'query'      => $this->query(),
+            'search'     => $this->search(),
             'size'       => $this->size(),
+            'sortable'   => $this->sortable(),
         ];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function query(): ?string
+    {
+        return $this->options['search'] === true ? get('query') : null;
     }
 
     /**
@@ -99,6 +265,17 @@ abstract class ModelsSection extends Section
         return [
             'empty' => [
                 'type' => 'i18n'
+            ],
+            'flip' => [
+                'type'    => 'boolean',
+                'default' => false,
+            ],
+            'help' => [
+                'type' => 'i18n',
+            ],
+            'image' => [
+                'type'    => 'any',
+                'default' => []
             ],
             'info' => [
                 'type' => 'i18n'
@@ -145,10 +322,15 @@ abstract class ModelsSection extends Section
             'text' => [
                 'type' => 'i18n',
             ],
-            'help' => [
-                'type' => 'i18n',
-            ],
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function search(): bool
+    {
+        return $this->options['search'];
     }
 
     /**
@@ -164,7 +346,35 @@ abstract class ModelsSection extends Section
      */
     public function sortable(): bool
     {
-        return $this->options['sortable'];
+        // not sortable if deactivated
+        if ($this->options['sortable'] === false) {
+            return false;
+        }
+
+        // not sortable during search
+        if (empty($this->query()) === false) {
+            return false;
+        }
+
+        // not sortable with custom sorting
+        if ($this->options['sortBy'] !== null) {
+            return false;
+        }
+
+        // not sortable when flipped
+        if ($this->options['flip'] === true) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function sortBy(): ?string
+    {
+        return $this->options['sortBy'];
     }
 
     /**
@@ -175,5 +385,39 @@ abstract class ModelsSection extends Section
         return $this->options['text'] ?? '{{ model.id }}';
     }
 
+    /**
+     * @return integer
+     */
+    public function total(): int
+    {
+        return $this->models()->pagination()->total();
+    }
+
+    /**
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $max   = $this->max();
+        $min   = $this->min();
+        $total = $this->total();
+
+        $placeholders = [
+            'min'     => $min,
+            'max'     => $max,
+            'section' => $this->label()
+        ];
+
+        return V::value($total,
+            [
+                'min' => $min,
+                'max' => $max
+            ],
+            [
+                'min' => $this->errorMessage('min', $placeholders, $min),
+                'max' => $this->errorMessage('max', $placeholders, $max),
+            ]
+        );
+    }
 
 }

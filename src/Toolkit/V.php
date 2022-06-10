@@ -476,14 +476,14 @@ V::$validators = [
     /**
      * Checks if the value does not exceed the maximum value
      */
-    'max' => function ($value, float $max): bool {
+    'max' => function ($value, float $max = null): bool {
         return V::size($value, $max, '<=') === true;
     },
 
     /**
      * Checks if the value is higher than the minimum value
      */
-    'min' => function ($value, float $min): bool {
+    'min' => function ($value, float $min = null): bool {
         return V::size($value, $min, '>=') === true;
     },
 
@@ -577,6 +577,10 @@ V::$validators = [
      * Checks that the value has the given size
      */
     'size' => function ($value, $size, $operator = '=='): bool {
+        if ($size === null) {
+            return true;
+        }
+
         // if value is field object, first convert it to a readable value
         // it is important to check at the beginning as the value can be string or numeric
         if (is_a($value, '\Kirby\Cms\Field') === true) {

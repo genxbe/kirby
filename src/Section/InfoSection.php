@@ -11,9 +11,6 @@ namespace Kirby\Section;
  */
 class InfoSection extends Section
 {
-
-    use Label;
-
     /**
      * @return array
      */
@@ -21,6 +18,9 @@ class InfoSection extends Section
     {
         return [
             'label' => [
+                'type' => 'i18n'
+            ],
+            'help' => [
                 'type' => 'i18n'
             ],
             'text' => [
@@ -39,6 +39,7 @@ class InfoSection extends Section
     {
         return [
             'label' => $this->label(),
+            'help'  => $this->help(),
             'text'  => $this->text(),
             'theme' => $this->options['theme']
         ];
@@ -49,12 +50,9 @@ class InfoSection extends Section
      */
     public function text(): ?string
     {
-        if ($this->options['text'] === null) {
-            return null;
-        }
+        $text = $this->stringTemplate($this->options['text']);
+        $text = $this->stringToKirbytext($text);
 
-        $text = $this->model()->toSafeString($this->options['text']);
-        $text = $this->kirby()->kirbytext($text);
         return $text;
     }
 

@@ -20,22 +20,12 @@ trait ParentModel
     protected $parent;
 
     /**
-     * Getter for the parent model
-     *
-     * @return \Kirby\Cms\Site|\Kirby\Cms\Page
-     */
-    public function parent()
-    {
-        return $this->parent;
-    }
-
-    /**
      * Setter for the parent model
      *
      * @param string|null $query
      * @return \Kirby\Cms\Site|\Kirby\Cms\Page
      */
-    public function setParent(?string $query = null)
+    protected function createParent(?string $query = null)
     {
         if ($query === null) {
             return $this->parent = $this->model;
@@ -55,6 +45,16 @@ trait ParentModel
         }
 
         return $this->parent = $parent;
+    }
+
+    /**
+     * Getter for the parent model
+     *
+     * @return \Kirby\Cms\Site|\Kirby\Cms\Page
+     */
+    public function parent()
+    {
+        return $this->parent;
     }
 
 }

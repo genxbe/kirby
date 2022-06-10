@@ -11,8 +11,6 @@ namespace Kirby\Section;
  */
 class StatsSection extends Section
 {
-    use Label;
-
     /**
      * @return array
      */
@@ -40,7 +38,7 @@ class StatsSection extends Section
         return [
             'label'   => $this->label(),
             'reports' => $this->reports(),
-            'size'    => $this->options['size']
+            'size'    => $this->size()
         ];
     }
 
@@ -52,7 +50,7 @@ class StatsSection extends Section
         $reports = $this->options['reports'];
 
         if (is_string($reports) === true) {
-            $reports = $this->model()->query($reports);
+            $reports = $this->stringQuery($reports);
         }
 
         if (is_array($reports) === false) {
@@ -63,7 +61,7 @@ class StatsSection extends Section
 
         foreach ($reports as $report) {
             if (is_string($report) === true) {
-                $report = $this->model->query($report);
+                $report = $this->stringQuery($report);
             }
 
             if (is_array($report) === false) {
@@ -72,14 +70,22 @@ class StatsSection extends Section
 
             $data[] = [
                 'label' => $this->i18n($report['label']),
-                'value' => $this->value($report['value'] ?? null),
-                'info'  => $this->value($report['info'] ?? null),
-                'link'  => $this->value($report['link'] ?? null),
-                'theme' => $this->value($report['theme'] ?? null)
+                'value' => $this->stringTemplate($report['value'] ?? null),
+                'info'  => $this->stringTemplate($report['info'] ?? null),
+                'link'  => $this->stringTemplate($report['link'] ?? null),
+                'theme' => $this->stringTemplate($report['theme'] ?? null)
             ];
         }
 
         return [];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function size(): ?string
+    {
+        return $this->options['size'];
     }
 
     /**
@@ -90,12 +96,4 @@ class StatsSection extends Section
         return 'stats';
     }
 
-    /**
-     * @param string|null $value
-     * @return string|null
-     */
-    public function value(?string $value = null): ?string
-    {
-        return $value === null ? null : $this->model->toString($value);
-    }
 }
