@@ -234,7 +234,7 @@ abstract class ModelsSection extends Section
      */
     public function page(): int
     {
-        return $this->options['page'] ?? get('page') ?? 1;
+        return $this->options['page'] ?? $this->kirby()->request()->get('page') ?? 1;
     }
 
     /**
