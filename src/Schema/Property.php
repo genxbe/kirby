@@ -13,6 +13,7 @@ use Kirby\Toolkit\V;
  */
 abstract class Property
 {
+    protected $alias    = null;
     protected $name     = null;
     protected $required = false;
     protected $default  = null;
@@ -60,6 +61,10 @@ abstract class Property
     {
         $this->setName($name);
 
+        if (isset($options['alias']) === true) {
+            $this->setAlias($options['alias']);
+        }
+
         if (isset($options['default']) === true) {
             $this->setDefault($options['default']);
         }
@@ -71,6 +76,14 @@ abstract class Property
         if (isset($options['validate']) === true) {
             $this->setValidate($options['validate']);
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function alias(): ?string
+    {
+        return $this->alias;
     }
 
     /**
@@ -96,6 +109,16 @@ abstract class Property
     }
 
     abstract public function set();
+
+    /**
+     * @param string|null $alias
+     * @return static
+     */
+    public function setAlias(string $alias = null)
+    {
+        $this->alias = $alias;
+        return $this;
+    }
 
     /**
      * @param mixed $default

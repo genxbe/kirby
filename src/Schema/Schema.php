@@ -70,11 +70,23 @@ class Schema
         $typed = [];
 
         foreach ($this->properties as $name => $property) {
+
+            // the value exists and can be applied immediately
             if (isset($data[$name]) === true) {
                 $typed[$name] = $property->apply($data[$name]);
                 continue;
             }
 
+            // the property might have an alias to look for
+            $alias = $property->alias();
+
+            // use the value from the alias
+            if ($alias !== null && isset($data[$alias]) === true) {
+                $typed[$name] = $property->apply($data[$alias]);
+                continue;
+            }
+
+            // the value does not exist but the property is required
             if ($property->required === true) {
                 throw new InvalidArgumentException('The argument for ' . $name . ' is missing');
             }
