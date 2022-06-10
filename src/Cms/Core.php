@@ -422,11 +422,11 @@ class Core
     public function sections(): array
     {
         return [
-            'fields' => $this->root . '/sections/fields.php',
-            'files'  => $this->root . '/sections/files.php',
-            'info'   => $this->root . '/sections/info.php',
-            'pages'  => $this->root . '/sections/pages.php',
-            'stats'  => $this->root . '/sections/stats.php',
+            'fields' => 'Kirby\Section\FieldsSection',
+            'files'  => 'Kirby\Section\FilesSection',
+            'info'   => 'Kirby\Section\InfoSection',
+            'pages'  => 'Kirby\Section\PagesSection',
+            'stats'  => 'Kirby\Section\StatsSection',
         ];
     }
 

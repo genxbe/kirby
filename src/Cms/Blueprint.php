@@ -754,6 +754,14 @@ class Blueprint
         // get all props
         $props = $this->sections[$name];
 
+        // load the section definition
+        $definition = $this->model()->kirby()->extension('sections', $props['type']);
+
+        // new section class loader
+        if (is_string($definition) === true && class_exists($definition)) {
+            return new $definition($this->model(), $props['name'], $props);
+        }
+
         // inject the blueprint model
         $props['model'] = $this->model();
 
