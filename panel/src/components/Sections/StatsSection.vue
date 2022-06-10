@@ -2,7 +2,7 @@
   <section v-if="isLoading === false" class="k-stats-section">
     <header class="k-section-header">
       <k-headline>
-        {{ headline }}
+        {{ label }}
       </k-headline>
     </header>
     <k-stats v-if="reports.length > 0" :reports="reports" :size="size" />
@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       isLoading: true,
-      headline: null,
+      label: null,
       reports: null,
       size: null
     };
@@ -26,7 +26,7 @@ export default {
   async created() {
     const section = await this.load();
     this.isLoading = false;
-    this.headline = section.headline;
+    this.label = section.label;
     this.reports = section.reports;
     this.size = section.size;
   },
