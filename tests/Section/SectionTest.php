@@ -216,7 +216,8 @@ class SectionTest extends TestCase
                 'type' => 'i18n'
             ],
             'label' => [
-                'type' => 'i18n'
+                'type'  => 'i18n',
+                'alias' => 'headline'
             ]
         ], $section->schema());
     }
@@ -258,12 +259,12 @@ class SectionTest extends TestCase
     {
         $section = $this->section();
         $this->assertSame([
-            'name'  => 'test',
-            'props' => [
-                'help'  => null,
-                'label' => null
-            ],
-            'type'  => 'test'
+            'code'   => 200,
+            'name'   => 'test',
+            'status' => 'ok',
+            'type'   => 'test',
+            'help'   => null,
+            'label'  => null,
         ], $section->toResponse());
     }
 
