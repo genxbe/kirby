@@ -21,7 +21,8 @@ class StatsSection extends Section
                 'type' => 'any'
             ],
             'size' => [
-                'type'    => 'string',
+                'type'    => 'enum',
+                'values'  => ['small', 'medium', 'large', 'huge'],
                 'default' => 'large'
             ]
         ]);
@@ -74,7 +75,7 @@ class StatsSection extends Section
             ];
         }
 
-        return [];
+        return $data;
     }
 
     /**
@@ -92,5 +93,4 @@ class StatsSection extends Section
     {
         return 'stats';
     }
-
 }

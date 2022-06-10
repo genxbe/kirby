@@ -107,7 +107,7 @@ class Schema
 
     /**
      * @param string $property
-     * @return boolean
+     * @return bool
      */
     public function has(string $property): bool
     {

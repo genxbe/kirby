@@ -18,7 +18,7 @@ class StringPropertyTest extends PropertyTestCase
             [null, null],
             ['test', 'test'],
             [1, '1'],
-            [new stdClass, new TypeError]
+            [new stdClass(), new TypeError()]
         ];
     }
 }

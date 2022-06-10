@@ -21,7 +21,7 @@ class BooleanPropertyTest extends PropertyTestCase
             ['1', true],
             [0, false],
             ['0', false],
-            [[], new TypeError]
+            [[], new TypeError()]
         ];
     }
 }

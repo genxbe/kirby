@@ -2,9 +2,9 @@
 
 namespace Kirby\Section;
 
-use Kirby\Exception\InvalidArgumentException;
 use Kirby\Cms\Collection;
-use Kirby\Toolkit\I18n;
+use Kirby\Exception\InvalidArgumentException;
+use Kirby\Exception\NotFoundException;
 use Kirby\Toolkit\V;
 
 /**
@@ -16,12 +16,15 @@ use Kirby\Toolkit\V;
  */
 abstract class ModelsSection extends Section
 {
-    use ParentModel;
-
     /**
      * @var \Kirby\Cms\Collection
      */
     protected $models;
+
+    /**
+     * @var \Kirby\Cms\ModelWithContent
+     */
+    protected $parent;
 
     /**
      * @param \Kirby\Cms\ModelWithContent $model
@@ -35,7 +38,7 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function add(): bool
     {
@@ -98,6 +101,31 @@ abstract class ModelsSection extends Section
     }
 
     /**
+     * Setter for the parent model
+     *
+     * @param string|null $query
+     * @return \Kirby\Cms\ModelWithContent
+     */
+    protected function createParent(?string $query = null)
+    {
+        if ($query === null) {
+            return $this->parent = $this->model;
+        }
+
+        $parent = $this->model->query($query);
+
+        if (empty($parent) === true) {
+            throw new NotFoundException('The parent for the query "' . $query . '" cannot be found');
+        }
+
+        if (is_a($parent, 'Kirby\Cms\ModelWithContent') === false) {
+            throw new InvalidArgumentException('The parent is invalid. You must choose the site, a page, a file or user as parent.');
+        }
+
+        return $this->parent = $parent;
+    }
+
+    /**
      * @return array
      */
     public function data(): array
@@ -114,7 +142,7 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function flip(): bool
     {
@@ -138,7 +166,7 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isFull(): bool
     {
@@ -158,7 +186,7 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function limit(): int
     {
@@ -181,7 +209,7 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return integer|null
+     * @return int|null
      */
     public function max(): ?int
     {
@@ -189,7 +217,7 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function min(): int
     {
@@ -202,7 +230,7 @@ abstract class ModelsSection extends Section
     abstract public function models();
 
     /**
-     * @return integer
+     * @return int
      */
     public function page(): int
     {
@@ -222,6 +250,16 @@ abstract class ModelsSection extends Section
             'page'   => $pagination->page(),
             'total'  => $pagination->total(),
         ];
+    }
+
+    /**
+     * Getter for the parent model
+     *
+     * @return \Kirby\Cms\ModelWithContent
+     */
+    public function parent()
+    {
+        return $this->parent;
     }
 
     /**
@@ -388,7 +426,7 @@ abstract class ModelsSection extends Section
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function total(): int
     {
@@ -410,7 +448,8 @@ abstract class ModelsSection extends Section
             'section' => $this->label()
         ];
 
-        return V::value($total,
+        return V::value(
+            $total,
             [
                 'min' => $min,
                 'max' => $max
@@ -421,5 +460,4 @@ abstract class ModelsSection extends Section
             ]
         );
     }
-
 }

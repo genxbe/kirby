@@ -21,8 +21,8 @@ class EnumPropertyTest extends PropertyTestCase
             ['a', 'a'],
             ['b', 'b'],
             ['c', 'c'],
-            ['d', new InvalidArgumentException],
-            [[], new InvalidArgumentException]
+            ['d', new InvalidArgumentException()],
+            [[], new InvalidArgumentException()]
         ];
     }
 }

@@ -12,8 +12,8 @@ namespace Kirby\Schema;
 class BooleanProperty extends Property
 {
     /**
-     * @param boolean|null $value
-     * @return boolean|null
+     * @param bool|null $value
+     * @return bool|null
      */
     public function set(bool $value = null): ?bool
     {

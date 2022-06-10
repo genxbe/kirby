@@ -100,7 +100,7 @@ abstract class Section
      * Create an error message key for the section and error type
      *
      * @param string $error
-     * @param integer|null $form
+     * @param int|null $form
      * @return string
      */
     public function errorMessageKey(string $error, ?int $form = null): string
@@ -231,7 +231,7 @@ abstract class Section
 
     /**
      * @param string|null $template
-     * @param boolean $safe
+     * @param bool $safe
      * @return string|null
      */
     public function stringTemplate(?string $template = null, bool $safe = true): ?string
@@ -287,11 +287,10 @@ abstract class Section
     abstract public function type(): string;
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function validate(): bool
     {
         return true;
     }
-
 }

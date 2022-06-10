@@ -27,5 +27,4 @@ class PropertyTestCase extends TestCase
 
         $this->assertSame($expected, $instance->apply($value));
     }
-
 }

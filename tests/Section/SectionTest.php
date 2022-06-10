@@ -29,7 +29,6 @@ class TestSectionWithSchema extends TestSection
  */
 class SectionTest extends TestCase
 {
-
     public function section(array $options = [])
     {
         $model = new Page(['slug' => 'test']);
@@ -284,5 +283,4 @@ class SectionTest extends TestCase
     {
         $this->assertTrue($this->section()->validate());
     }
-
 }

@@ -7,7 +7,6 @@ namespace Kirby\Schema;
  */
 class SchemaTest extends TestCase
 {
-
     /**
      * @covers ::__construct
      * @covers ::has
@@ -15,7 +14,7 @@ class SchemaTest extends TestCase
     public function test__construct()
     {
         // without properties
-        $schema = new Schema;
+        $schema = new Schema();
 
         $this->assertCount(0, $schema->properties());
 
@@ -39,7 +38,7 @@ class SchemaTest extends TestCase
      */
     public function test__setAndGet()
     {
-        $schema = new Schema;
+        $schema = new Schema();
         $schema->title = $property = new StringProperty('title');
 
         $this->assertSame($property, $schema->title);
@@ -51,7 +50,7 @@ class SchemaTest extends TestCase
     public function testAdd()
     {
         // simple
-        $schema = new Schema;
+        $schema = new Schema();
         $property = $schema->add('test', [
             'type' => 'string'
         ]);
@@ -59,7 +58,7 @@ class SchemaTest extends TestCase
         $this->assertInstanceOf('Kirby\Schema\StringProperty', $property);
 
         // with default
-        $schema = new Schema;
+        $schema = new Schema();
         $property = $schema->add('test', [
             'type'    => 'string',
             'default' => 'foo'
@@ -68,7 +67,7 @@ class SchemaTest extends TestCase
         $this->assertSame('foo', $property->default);
 
         // required
-        $schema = new Schema;
+        $schema = new Schema();
         $property = $schema->add('test', [
             'type'     => 'string',
             'required' => true
@@ -77,7 +76,7 @@ class SchemaTest extends TestCase
         $this->assertTrue($property->required);
 
         // with implicit type
-        $schema = new Schema;
+        $schema = new Schema();
         $property = $schema->add('integer');
 
         $this->assertInstanceOf('Kirby\Schema\IntegerProperty', $property);
@@ -117,7 +116,7 @@ class SchemaTest extends TestCase
      */
     public function testProperties()
     {
-        $schema = new Schema;
+        $schema = new Schema();
 
         $property = $schema->add('title', [
             'type' => 'string'
@@ -133,7 +132,7 @@ class SchemaTest extends TestCase
      */
     public function testRemove()
     {
-        $schema = new Schema;
+        $schema = new Schema();
 
         $this->assertFalse($schema->has('title'));
 
@@ -146,7 +145,5 @@ class SchemaTest extends TestCase
         $schema->remove('title');
 
         $this->assertFalse($schema->has('title'));
-
     }
-
 }

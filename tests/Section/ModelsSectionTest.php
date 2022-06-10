@@ -33,7 +33,6 @@ class TestModelsSection extends ModelsSection
  */
 class ModelsSectionTest extends TestCase
 {
-
     public function section(array $options = [])
     {
         $model = new Page(['slug' => 'test']);
@@ -73,7 +72,7 @@ class ModelsSectionTest extends TestCase
         $this->assertSame(['label' => 'Test', 'message' => 'Add no more than 25 items'], $section->errors());
 
         // min error
-        $section = $this->section(['min' => 5, 'models' => new Collection]);
+        $section = $this->section(['min' => 5, 'models' => new Collection()]);
         $this->assertSame(['label' => 'Test', 'message' => 'Add at least 5 items'], $section->errors());
     }
 
@@ -226,7 +225,7 @@ class ModelsSectionTest extends TestCase
     {
         // default
         $section = $this->section([
-            'models' => new Collection
+            'models' => new Collection()
         ]);
 
         $expected = [
@@ -258,18 +257,10 @@ class ModelsSectionTest extends TestCase
      */
     public function testParentInvalid()
     {
-        $this->app([
-            'users' => [
-                [
-                    'email' => 'test@getkirby.com'
-                ]
-            ]
-        ]);
-
         $this->expectException('Kirby\Exception\InvalidArgumentException');
-        $this->expectExceptionMessage('The parent is invalid. You must choose the site or a page as parent.');
+        $this->expectExceptionMessage('The parent is invalid. You must choose the site, a page, a file or user as parent.');
 
-        $this->section(['parent' => 'kirby.users.first']);
+        $this->section(['parent' => 'kirby.urls']);
     }
 
     /**
@@ -355,7 +346,6 @@ class ModelsSectionTest extends TestCase
      */
     public function testSchema()
     {
-
     }
 
     /**
@@ -473,5 +463,4 @@ class ModelsSectionTest extends TestCase
         $section = $this->section(['text' => '{{ page.title }}']);
         $this->assertSame('{{ page.title }}', $section->text());
     }
-
 }

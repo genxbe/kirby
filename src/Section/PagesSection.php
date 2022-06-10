@@ -4,6 +4,7 @@ namespace Kirby\Section;
 
 use Kirby\Cms\Blueprint;
 use Kirby\Cms\Pages;
+use Kirby\Exception\InvalidArgumentException;
 use Kirby\Toolkit\A;
 use Throwable;
 
@@ -16,9 +17,8 @@ use Throwable;
  */
 class PagesSection extends ModelsSection
 {
-
     /**
-     * @return boolean
+     * @return bool
      */
     public function add(): bool
     {
@@ -105,6 +105,23 @@ class PagesSection extends ModelsSection
     }
 
     /**
+     * Setter for the parent model
+     *
+     * @param string|null $query
+     * @return \Kirby\Cms\Site|\Kirby\Cms\Page
+     */
+    protected function createParent(?string $query = null)
+    {
+        $parent = parent::createParent($query);
+
+        if (is_a($parent, 'Kirby\Cms\Site') === false && is_a($parent, 'Kirby\Cms\Page') === false) {
+            throw new InvalidArgumentException('The parent is invalid. You must choose the site or a page as parent.');
+        }
+
+        return $parent;
+    }
+
+    /**
      * @return array
      */
     public function data(): array
@@ -183,7 +200,8 @@ class PagesSection extends ModelsSection
     {
         return array_merge(parent::schema(), [
             'create' => [
-                'type' => 'any'
+                'type'    => 'any',
+                'default' => true,
             ],
             'status' => [
                 'type'    => 'enum',
@@ -191,7 +209,8 @@ class PagesSection extends ModelsSection
                 'default' => 'all'
             ],
             'templates' => [
-                'type' => 'array',
+                'type'    => 'array',
+                'default' => []
             ]
         ]);
     }
@@ -218,11 +237,11 @@ class PagesSection extends ModelsSection
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function templates(): ?array
+    public function templates(): array
     {
-        return A::wrap($this->options['templates'] ?? []);
+        return $this->options['templates'];
     }
 
     /**

@@ -12,8 +12,8 @@ namespace Kirby\Schema;
 class IntegerProperty extends Property
 {
     /**
-     * @param integer|null $value
-     * @return integer|null
+     * @param int|null $value
+     * @return int|null
      */
     public function set(int $value = null): ?int
     {

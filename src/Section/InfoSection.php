@@ -51,6 +51,14 @@ class InfoSection extends Section
     }
 
     /**
+     * @return string|null
+     */
+    public function theme(): ?string
+    {
+        return $this->options['theme'];
+    }
+
+    /**
      * @return string
      */
     public function type(): string

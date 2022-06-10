@@ -18,7 +18,7 @@ class FloatPropertyTest extends PropertyTestCase
             [1, 1.0],
             ['1.1', 1.1],
             [true, 1.0],
-            [[], new TypeError]
+            [[], new TypeError()]
         ];
     }
 }

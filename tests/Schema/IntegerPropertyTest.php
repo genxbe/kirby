@@ -18,7 +18,7 @@ class IntegerPropertyTest extends PropertyTestCase
             [1, 1],
             ['1', 1],
             [true, 1],
-            [[], new TypeError]
+            [[], new TypeError()]
         ];
     }
 }

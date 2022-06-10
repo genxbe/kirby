@@ -18,7 +18,7 @@ class I18nPropertyTest extends PropertyTestCase
             [null, null],
             ['test', 'test'],
             [['en' => 'test'], 'test'],
-            [new stdClass, new TypeError]
+            [new stdClass(), new TypeError()]
         ];
     }
 }

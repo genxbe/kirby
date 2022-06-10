@@ -14,7 +14,6 @@ use Kirby\Cms\Files;
  */
 class FilesSection extends ModelsSection
 {
-
     /**
      * @return string|null
      */
@@ -173,7 +172,7 @@ class FilesSection extends ModelsSection
 
         // attributes to be added for new uploads
         $attributes = array_filter([
-            'sort'     => $sortable === false     ? null : $total + 1,
+            'sort'     => $sortable === false ? null : $total + 1,
             'template' => $template === 'default' ? null : $template
         ]);
 

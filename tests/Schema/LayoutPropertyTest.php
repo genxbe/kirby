@@ -19,8 +19,8 @@ class LayoutPropertyTest extends PropertyTestCase
             ['list', 'list'],
             ['cardlets', 'cardlets'],
             ['table', 'table'],
-            ['kanban', new InvalidArgumentException],
-            [[], new InvalidArgumentException]
+            ['kanban', new InvalidArgumentException()],
+            [[], new InvalidArgumentException()]
         ];
     }
 }

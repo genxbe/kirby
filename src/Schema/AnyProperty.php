@@ -13,9 +13,9 @@ class AnyProperty extends Property
 {
     /**
      * @param mixed|null $value
-     * @return null
+     * @return mixed
      */
-    public function set($value = null): ?array
+    public function set($value = null)
     {
         return $value;
     }

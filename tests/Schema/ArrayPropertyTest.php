@@ -16,7 +16,7 @@ class ArrayPropertyTest extends PropertyTestCase
         return [
             [null, null],
             [['test'], ['test']],
-            [1, new TypeError]
+            [1, new TypeError()]
         ];
     }
 }

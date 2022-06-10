@@ -13,7 +13,6 @@ use Kirby\Form\Form;
  */
 class FieldsSection extends Section
 {
-
     /**
      * @var \Kirby\Form\Form
      */
@@ -106,5 +105,4 @@ class FieldsSection extends Section
     {
         return 'fields';
     }
-
 }

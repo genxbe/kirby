@@ -141,7 +141,7 @@ abstract class Property
     }
 
     /**
-     * @param boolean $required
+     * @param bool $required
      * @return static
      */
     public function setRequired(bool $required = true)
