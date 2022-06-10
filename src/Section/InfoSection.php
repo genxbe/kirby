@@ -16,20 +16,14 @@ class InfoSection extends Section
      */
     public static function schema(): array
     {
-        return [
-            'label' => [
-                'type' => 'i18n'
-            ],
-            'help' => [
-                'type' => 'i18n'
-            ],
+        return array_merge(parent::schema(), [
             'text' => [
                 'type' => 'i18n'
             ],
             'theme' => [
                 'type' => 'string'
             ]
-        ];
+        ]);
     }
 
     /**

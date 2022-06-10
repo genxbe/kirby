@@ -16,10 +16,7 @@ class StatsSection extends Section
      */
     public static function schema(): array
     {
-        return [
-            'label' => [
-                'type' => 'i18n'
-            ],
+        return array_merge(parent::schema(), [
             'reports' => [
                 'type' => 'any'
             ],
@@ -27,7 +24,7 @@ class StatsSection extends Section
                 'type'    => 'string',
                 'default' => 'large'
             ]
-        ];
+        ]);
     }
 
     /**
