@@ -595,6 +595,15 @@ export default {
       this.$emit("input", this.blocks);
     },
     select(block, event = null) {
+      // resets multi selecting on tab change
+      // keep only if there are already multiple selections
+      // triggers `blur` event when tab changed
+      window.addEventListener('blur', () => {
+        if (this.batch.length === 0) {
+          this.isMultiSelectKey = false;
+        }
+      });
+
       // checks the event just before selecting the block
       // especially since keyup doesn't trigger in with
       // `ctrl/alt/cmd + tab` or `ctrl/alt/cmd + click` combinations
